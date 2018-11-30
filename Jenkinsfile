@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('Server') {
+    stage('Build') {
       parallel {
         stage('Server') {
           agent {
@@ -34,6 +34,33 @@ cat > dist/index.html <<EOF
 Hello !
 EOF
 touch "dist/client.js"'''
+            stash(name: 'client', includes: '**/dist/*')
+          }
+        }
+      }
+    }
+    stage('Test') {
+      parallel {
+        stage('Chrome') {
+          agent {
+            docker {
+              image 'standalone-chrome'
+            }
+
+          }
+          steps {
+            sh 'echo \'mvn test -Dbrowser=chrome\''
+          }
+        }
+        stage('Firefox') {
+          agent {
+            docker {
+              image 'selenium/standalone-firefox'
+            }
+
+          }
+          steps {
+            sh 'echo \'mvn test -Dbrowser=firefox\''
           }
         }
       }
