@@ -44,7 +44,7 @@ touch "dist/client.js"'''
         stage('Chrome') {
           agent {
             docker {
-              image 'standalone-chrome'
+              image 'selenium/standalone-chrome'
             }
 
           }
