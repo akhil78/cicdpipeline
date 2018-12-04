@@ -68,8 +68,8 @@ touch "dist/client.js"'''
     stage('QA') {
       agent {
         docker {
-          image 'tomcate:8.0-jre8'
           args '-p 11080:8080'
+          image 'tomcat:8.0-jre8'
         }
 
       }
